@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/pengaduan', function () {
     return view('pengaduan/index');
 });
+
+Route::get('/pengaduan/create', function () {
+    return view('pengaduan/create');
+});
