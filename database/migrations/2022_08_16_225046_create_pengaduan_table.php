@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('pengaduan', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('password');
-            $table->string('nama');
-            $table->string('telepon');
-            $table->enum('level', ['admin', 'petugas']);
-            $table->rememberToken();
+            $table->unsignedBigInteger('masyarakat_id');
+            $table->foreign('masyarakat_id')->references('id')->on('masyarakat');
+            $table->string('isi_laporan');
+            $table->string('lampiran')->nullable();
+            $table->enum('status', ['0', 'proses', 'selesai']);
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pengaduan');
     }
 };

@@ -3,12 +3,11 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class UserFactory extends Factory
+class MasyarakatFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -24,22 +23,6 @@ class UserFactory extends Factory
             'password' => password_hash('password', PASSWORD_DEFAULT), // password
             'nama' => $this->faker->name(),
             'telepon' => $this->faker->phoneNumber(),
-            'level' => $faker->randomElement(['admin', 'petugas']),
-            'remember_token' => Str::random(10),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return static
-     */
-    public function unverified()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
     }
 }
