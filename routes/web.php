@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\PengaduanController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\MasyarakatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +20,6 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::resource('/petugas', UserController::class);
 Route::resource('/pengaduan', PengaduanController::class);
+Route::resource('/masyarakat', MasyarakatController::class);

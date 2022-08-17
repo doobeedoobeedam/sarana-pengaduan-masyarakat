@@ -5,45 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/boxicons.min.css') }}" rel="stylesheet">
 </head>
 <body>
     @include('templates/alerts')
-    
+
     <div class="min-h-screen w-full flex flex-row bg-gray">
         {{-- Sidebar --}}
-        <div class="sidebar hidden z-30 absolute flex flex-col w-60 bg-dark overflow-hidden min-h-screen shadow-md">
-            <div class="flex items-center py-3 px-5 shadow-sm shadow-secondary">
-                <span class="text-2xl text-gray top-5 left-4 cursor-pointer flex items-center" onclick="openSidebar()">
-                    <i class="bx bx-x mr-3"></i> <img src="{{ asset('img/logo-merah.png') }}" alt="">
-                </span>
-            </div>
-            <ul class="flex flex-col px-2 py-4 [&>li>a]:text-gray [&>li>a]:flex [&>li>a]:flex-row [&>li>a]:items-center [&>li>a]:h-12">
-                <li>
-                    <a href="/" class="transform hover:translate-x-2 transition-transform ease-in duration-200">
-                        <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-home {{ Request::is('/') ? 'text-danger' : '' }}"></i></span>
-                        <span class="text-sm font-medium">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/pengaduan/create" class="transform hover:translate-x-2 transition-transform ease-in duration-200">
-                        <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bxs-edit {{ Request::is('pengaduan/create') ? 'text-danger' : '' }}"></i></span>
-                        <span class="text-sm font-medium">Buat Pengaduan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/pengaduan" class="transform hover:translate-x-2 transition-transform ease-in duration-200">
-                        <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-notepad {{ Request::is('pengaduan') ? 'text-danger' : '' }}"></i></span>
-                        <span class="text-sm font-medium">Semua Pengaduan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="transform hover:translate-x-2 transition-transform ease-in duration-200">
-                        <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-log-out"></i></span>
-                        <span class="text-sm font-medium">Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        @include('templates/sidebar')
 
         {{-- Navbar --}}
         <nav class="top-0 w-full absolute flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg shadow-sm bg-white">
@@ -62,6 +31,9 @@
             @yield('content')
         </div>
     </div>
+
+    @include('templates/modal');
+    <div id="overlay" class="fixed hidden z-40 w-screen h-screen inset-0 bg-secondary bg-opacity-40"></div>
 
     <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 </body>

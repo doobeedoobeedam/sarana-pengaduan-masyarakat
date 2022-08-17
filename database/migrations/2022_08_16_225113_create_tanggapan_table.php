@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('tanggapan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pengaduan_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->foreign('pengaduan_id')->references('id')->on('pengaduan');
+            $table->unsignedBigInteger('pengaduan_id')->unsigned()->nullable();
+            $table->foreign('pengaduan_id')->references('id')->on('pengaduan')->onDelete('set null');
             $table->string('tanggapan');
-            $table->unsignedBigInteger('petugas_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->foreign('petugas_id')->references('id')->on('users');
+            $table->unsignedBigInteger('petugas_id')->unsigned()->nullable();
+            $table->foreign('petugas_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }

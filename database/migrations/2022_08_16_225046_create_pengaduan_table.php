@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('pengaduan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('masyarakat_id');
-            $table->foreign('masyarakat_id')->references('id')->on('masyarakat');
+            $table->unsignedBigInteger('masyarakat_id')->unsigned()->nullable();
+            $table->foreign('masyarakat_id')->references('id')->on('masyarakat')->onDelete('set null');
             $table->string('isi_laporan');
             $table->string('lampiran')->nullable();
             $table->enum('status', ['0', 'proses', 'selesai']);
