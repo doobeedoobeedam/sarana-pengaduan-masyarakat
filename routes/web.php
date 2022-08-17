@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PengaduanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +18,4 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/pengaduan', function () {
-    return view('pengaduan/index');
-});
-
-Route::get('/pengaduan/create', function () {
-    return view('pengaduan/create');
-});
+Route::resource('/pengaduan', PengaduanController::class);
