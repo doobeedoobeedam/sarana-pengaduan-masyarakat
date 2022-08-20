@@ -27,7 +27,7 @@
                 <td class="px-6 py-4">{{ $user->nama }}</td>
                 <td class="px-6 py-4">{{ $user->username }}</td>
                 <td class="px-6 py-4">{{ $user->telepon }}</td>
-                <td class="px-6 py-4">{{ $user->level }}</td>
+                <td class="px-6 py-4 capitalize">{{ $user->level }}</td>
                 <td class="px-6 py-4">
                     <a href="#" class="text-warning"><i class="bx bxs-pencil"></i></a>
                     <button class="text-danger deletePengguna" data-id="{{ $user->id }}"><i class="bx bxs-trash"></i></button>

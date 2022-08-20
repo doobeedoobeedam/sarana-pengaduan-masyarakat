@@ -5,19 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\Pengaduan;
 use App\Models\Tanggapan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PengaduanController extends Controller
 {
     public function index() {
         if(auth()->user()->level == 'masyarakat') {
             $pengaduan = Pengaduan::where('masyarakat_id', auth()->user()->id)->get();
-        } else {
-            $pengaduan = Pengaduan::where('status', '!=', 'selesai')->get();
+        } elseif(auth()->user()->level == 'admin')
+            $pengaduan = Pengaduan::all();
+        else {
+            $pengaduan = Pengaduan::where('status', '==', '0')->get();
         }
 
         return view('pengaduan/index', [
             'title' => 'Semua Pengaduan',
             'pengaduan' => $pengaduan
+        ]);
+    }
+
+    public function belum() {
+        $this->authorize('masyarakat');
+        return view('pengaduan/index', [
+            'title' => 'Pengaduan Belum Ditanggapi',
+            'pengaduan' => Pengaduan::where('masyarakat_id', auth()->user()->id)
+            ->where('status', '0')->get()
+        ]);
+    }
+
+    public function proses() {
+        $this->authorize('masyarakat');
+        return view('pengaduan/index', [
+            'title' => 'Pengaduan Diproses',
+            'pengaduan' => Pengaduan::where('masyarakat_id', auth()->user()->id)
+            ->where('status', 'proses')->get()
+        ]);
+    }
+
+    public function selesai() {
+        $this->authorize('masyarakat');
+        return view('pengaduan/index', [
+            'title' => 'Pengaduan Selesai',
+            'pengaduan' => Pengaduan::where('masyarakat_id', auth()->user()->id)
+            ->where('status', 'selesai')->get()
         ]);
     }
 
@@ -37,7 +67,6 @@ class PengaduanController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'masyarakat_id' => 'required',
             'isi_laporan' => 'required',
             'lampiran' => 'image|file|max:1024',
         ]);
@@ -46,7 +75,7 @@ class PengaduanController extends Controller
             $validated['lampiran'] = $request->file('lampiran')->store('lampiran-laporan');
         }
 
-        // $validated['masyarakat_id'] = auth()->user()->id;
+        $validated['masyarakat_id'] = auth()->user()->id;
 
         if(Pengaduan::create($validated)) {
             return redirect('pengaduan')->with('berhasil', 'Berhasil mengirim aduan!');
@@ -65,12 +94,14 @@ class PengaduanController extends Controller
 
     public function update(Request $request, Pengaduan $pengaduan) {
         $validated = $request->validate([
-            'masyarakat_id' => 'required',
             'isi_laporan' => 'required',
             'lampiran' => 'image|file|max:1024',
         ]);
-
+        
         if($request->file('lampiran')) {
+            if($request->oldLampiran) {
+                Storage::delete($request->oldLampiran);
+            }
             $validated['lampiran'] = $request->file('lampiran')->store('lampiran-laporan');
         }
 
@@ -82,9 +113,9 @@ class PengaduanController extends Controller
     }
 
     public function destroy(Pengaduan $pengaduan) {
-        // if($post->image) {
-        //     Storage::delete($post->image);
-        // }
+        if($pengaduan->lampiran) {
+            Storage::delete($pengaduan->lampiran);
+        }
         if(Pengaduan::destroy($pengaduan->id)) {
             return redirect('pengaduan')->with('berhasil', 'Berhasil menghapus aduan!');
         }else{
@@ -92,26 +123,24 @@ class PengaduanController extends Controller
         }
     }
 
-    public function response(Request $request) {
+    public function response(Pengaduan $pengaduan, Request $request) {
         $validated = $request->validate([
-            'status' => 'required'
+            'status' => 'required',
+            'tanggapan' => 'required'
         ]);
 
-        $berhasil = Pengaduan::where('id', $request->pengaduanID)->update(['status' => $validated['status']]);
-
-        if($request->tanggapan) {
-            $berhasil = Tanggapan::create([
-                'pengaduan_id' => $request->pengaduanID,
-                'tanggapan' => $request->tanggapan,
-                'status' => $validated['status'],
-                'petugas_id' => 1,
-            ]);
+        if($validated['status'] !== $pengaduan->status) {
+            Pengaduan::where('id', $pengaduan->id)->update(['status' => $validated['status']]);
+            Tanggapan::create([
+                    'pengaduan_id' => $pengaduan->id,
+                    'tanggapan' => $request->tanggapan,
+                    'status' => $validated['status'],
+                    'petugas_id' => auth()->user()->id,
+                ]);
+            return redirect()->back()->with('berhasil', 'Berhasil memberi tanggapan!');
+        } else {
+            return redirect()->back()->with('gagal', 'Gagal memberi tanggapan!');
         }
 
-        if($berhasil) {
-            return redirect()->back()->with('berhasil', 'Berhasil mengubah aduan!');
-        }else{
-            return redirect()->back()->with('gagal', 'Gagal mengubah aduan!');
-        }
     }
 }

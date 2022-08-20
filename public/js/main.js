@@ -2,6 +2,21 @@ function openSidebar() {
     document.querySelector(".sidebar").classList.toggle("hidden");
 }
 
+function previewImage() {
+    const inputImage = document.querySelector('#lampiran');
+    const previewImage = document.querySelector('.previewImage');
+
+    previewImage.classList.add('w-[200px]');
+    previewImage.classList.add('mb-2');
+    previewImage.classList.add('block');
+
+    const oFReader = new FileReader();
+    oFReader.readAsDataURL(inputImage.files[0]);
+    oFReader.onload = function(oFRevent) {
+        previewImage.src = oFRevent.target.result;
+    }
+}
+
 const alertBtn = document.querySelectorAll('.closealertbutton');
 alertBtn.forEach(btn => {
     const pid = btn.parentElement;
@@ -28,13 +43,15 @@ openDetail.forEach(o => {
             <div class="flex">
                 <div class="font-semibold text-sm uppercase text-danger mr-8 [&>p]:mb-5">
                     <p>Nama</p>
-                    <p>Username</p>
+                    ${o.dataset.username ? `<p>Username</p>` : ``}
                     <p>Telepon</p>
+                    <p>Role</p>
                 </div>
                 <div class="[&>p]:mb-5 text-dark text-sm">
                     <p>${o.dataset.nama}</p>
-                    <p>${o.dataset.username}</p>
+                    ${o.dataset.username ? `<p>${o.dataset.username}</p>` : ``}
                     <p>${o.dataset.telepon}</p>
+                    <p class="capitalize">${o.dataset.level}</p>
                 </div>
             </div>
         `;

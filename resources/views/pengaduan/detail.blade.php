@@ -4,7 +4,20 @@
     <div class="flex flex-wrap">
         <div class="mb-8 mr-16">
             <p class="font-semibold text-sm uppercase text-danger mb-2">Pelapor</p>
+            @canany(['petugas', 'admin'])
+                <td class="px-4 py-4">
+                    @if ($pengaduan->masyarakat)
+                        <a class="openDetail text-danger cursor-pointer" data-nama="{{ $pengaduan->masyarakat->nama }}" data-telepon="{{ $pengaduan->masyarakat->telepon }}" data-level="{{ $pengaduan->masyarakat->level }}">
+                            {{ $pengaduan->masyarakat->nama }}
+                        </a>
+                    @else
+                    <p class="text-dark">-</p>
+                    @endif
+                </td>
+            @endcanany
+            @can('masyarakat')
             <p class="text-dark">{{ $pengaduan->masyarakat->nama }}</p>
+            @endcan
         </div>
         <div class="mb-8 mr-16">
             <p class="font-semibold text-sm uppercase text-danger mb-2">Telepon</p>
@@ -25,8 +38,6 @@
     </div>
     @if ($pengaduan->lampiran)
     <img src="{{ asset('storage/' . $pengaduan->lampiran) }}" alt="{{ $pengaduan->masyarakat->nama }}" class="w-[600px]">
-    @else
-    <img src="{{ asset('storage/lampiran-laporan\2B8jvu7i5KA3mr1DnDxvoHIi5nh2qs5BN4LCpHRl.png') }}" alt="{{ $pengaduan->masyarakat->nama }}" class="w-[600px]">
     @endif
 </div>
 
@@ -46,11 +57,30 @@
             <tr>
                 <td class="px-4 py-4 text-secondary">{{ $loop->iteration }}</td>
                 <td class="px-4 py-4 text-secondary">{{ date('d F Y', strtotime($tanggapan->created_at)) }}</td>
-                <td class="px-4 py-4 text-secondary">{{ $tanggapan->petugas->nama }}</td>
+                @if ($tanggapan->petugas)
+                    @canany(['petugas', 'admin'])
+                        <td class="px-4 py-4">
+                            <a class="openDetail text-danger cursor-pointer" data-nama="{{ $tanggapan->petugas->nama }}" data-telepon="{{ $tanggapan->petugas->telepon }}" data-level="{{ $tanggapan->petugas->level }}">
+                                {{ $tanggapan->petugas->nama }}
+                            </a>
+                        </td>
+                    @endcanany
+                    @can('masyarakat')
+                        <td class="px-4 py-4 text-secondary">{{ $tanggapan->petugas->nama }}</td>
+                    @endcan
+                @else
+                <td class="px-4 py-4 text-secondary">-</td>
+                @endif
                 <td class="px-4 py-4 text-center">
                     <span class="text-white text-sm w-1/3 pb-1 {{ $tanggapan->status == 'proses' ? 'bg-primary' : ''}} {{ $tanggapan->status == 'selesai' ? 'bg-success' : ''}} {{ $tanggapan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $tanggapan->status == '0' ? 'menunggu' : $tanggapan->status }}</span>
                 </td>
-                <td class="px-4 py-4 text-secondary">{{ substr($tanggapan->tanggapan,0,70) . '...' }}</td>
+                <td class="px-4 py-4 text-secondary">
+                    @if ($tanggapan->tanggapan)
+                        {{ substr($tanggapan->tanggapan,0,70) . '...' }}
+                    @else
+                        -
+                    @endif
+                </td>
             </tr>
             @endforeach
         </tbody>
@@ -58,48 +88,48 @@
 @endif
 
 @if($pengaduan->status == 'proses' OR $pengaduan->status == 0)
-    @canany(['petugas', 'admin'])
-    <div class="bg-white py-6 px-9 mb-5 rounded-lg">
-        <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-6">Tanggapan</h1>
-        <form action="/pengaduan/respon" method="post">
-            @csrf
-            @method('put')
-            <input type="hidden" name="pengaduanID" value="{{ $pengaduan->id }}">
-            <div class="w-full mb-6">
-                <label class="tracking-wide after:content-['*'] after:ml-0.5 after:text-danger block text-sm font-medium text-dark mb-1" for="grid-state">Status</label>
-                <div class="relative">
-                    <select class="appearance-none px-3 py-2 bg-white border shadow-sm @error('status') border-danger @else border-gray @enderror placeholder-secondary focus:outline-none focus:border-gray focus:ring-gray block w-full rounded-md sm:text-sm focus:ring-1 text-secondary" id="grid-state" name="status">
-                        @if ($pengaduan->status == 'proses')
-                            <option value="proses" selected>Proses</option>
-                            <option value="selesai">Selesai</option>
-                        @elseif($pengaduan->status == 'selesai')
-                            <option value="selesai" selected>Selesai</option>
-                        @elseif($pengaduan->status == 0)
-                            <option value="0" selected>Belum ditanggapi</option>
-                            <option value="proses">Proses</option>
-                            <option value="selesai">Selesai</option>
-                        @endif
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <i class='bx bx-chevron-down text-xl'></i>
+    @canany(['petugas'])
+        <div class="bg-white py-6 px-9 mb-5 rounded-lg">
+            <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-6">Tanggapan</h1>
+            <form action="/pengaduan/respon/{{ $pengaduan->id }}" method="post" class="[&>div>label]:block [&>div>label]:mb-2 [&>div>label]:text-sm [&>div>label]:font-medium [&>div>label]:text-dark">
+                @csrf
+                @method('put')
+                <div class="w-full mb-6">
+                    <label class="tracking-wide after:content-['*'] after:ml-0.5 after:text-danger" for="grid-state">Status</label>
+                    <div class="relative">
+                        <select class="appearance-none px-3 py-2 rounded-lg bg-white border shadow-sm @error('status') border-danger @else border-gray @enderror placeholder-secondary focus:outline-none focus:border-gray focus:ring-gray block w-full rounded-md sm:text-sm focus:ring-1 text-secondary" id="grid-state" name="status">
+                            @if ($pengaduan->status == 'proses')
+                                <option selected disabled>Pilih status</option>
+                                <option value="selesai">Selesai</option>
+                            @elseif($pengaduan->status == 'selesai')
+                                <option selected disabled>Selesai</option>
+                                <option value="proses">Proses</option>
+                            @elseif($pengaduan->status == 0)
+                                <option selected disabled>Belum ditanggapi</option>
+                                <option value="proses">Proses</option>
+                                <option value="selesai">Selesai</option>
+                            @endif
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class='bx bx-chevron-down text-xl'></i>
+                        </div>
                     </div>
-                </div>
-                @error('status')
-                <p class="mt-1 text-xs text-danger" id="file_input_help">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="mb-6">
-                <label for="" class="block mb-2 text-sm font-medium text-dark">Isi Tanggapan</label>
-                <textarea id="tanggapan" name="tanggapan" rows="4" class="block px-3 py-2 w-full focus:outline-none text-sm text-secondary bg-white rounded-lg border @error('tanggapan') border-danger @else border-gray @enderror shadow-sm focus:border-gray focus:ring-gray" placeholder="Ketik laporan...">{{ old('tanggapan') }}</textarea>
-                @error('tanggapan')
+                    @error('status')
                     <p class="mt-1 text-xs text-danger" id="file_input_help">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="flex justify-end">
-                <button type="submit" class="text-white bg-danger focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
-            </div>
-        </form>
-    </div>
+                    @enderror
+                </div>
+                <div class="mb-6">
+                    <label for="tanggapan" class="after:content-['*'] after:ml-0.5 after:text-danger">Isi Tanggapan</label>
+                    <textarea id="tanggapan" name="tanggapan" rows="4" class="block px-3 py-2 w-full focus:outline-none text-sm text-secondary bg-white rounded-lg border @error('tanggapan') border-danger @else border-gray @enderror shadow-sm focus:border-gray focus:ring-gray" placeholder="Ketik tanggapan...">{{ old('tanggapan') }}</textarea>
+                    @error('tanggapan')
+                    <p class="mt-1 text-xs text-danger" id="file_input_help">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="text-white bg-danger focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
+                </div>
+            </form>
+        </div>
     @endcanany
 @endif
 @endsection

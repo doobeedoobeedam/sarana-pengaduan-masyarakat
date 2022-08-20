@@ -2,7 +2,7 @@
 @section('content')
     <div class="bg-white py-4 px-9 mb-5 rounded-lg flex justify-between items-center">
         <div class="">
-            <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-2">Data Pengaduan</h1>
+            <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-2">{{ $title }}</h1>
             <p class="text-base font-normal text-secondary">Ayo sampaikan laporan Anda di sini</p>
         </div>
         @can('masyarakat')
@@ -30,7 +30,7 @@
                     @canany(['petugas', 'admin'])
                         <td class="px-4 py-4">
                             @if ($aduan->masyarakat)
-                                <a class="openDetail text-danger cursor-pointer" data-nama="{{ $aduan->masyarakat->nama }}" data-username="{{ $aduan->masyarakat->username }}" data-telepon="{{ $aduan->masyarakat->telepon }}">
+                                <a class="openDetail text-danger cursor-pointer" data-nama="{{ $aduan->masyarakat->nama }}" data-telepon="{{ $aduan->masyarakat->telepon }}" data-level="{{ $aduan->masyarakat->level }}">
                                     {{ $aduan->masyarakat->nama }}
                                 </a>
                             @else
@@ -42,14 +42,18 @@
                     <td class="px-4 py-4 text-center">
                         <span class="text-white text-sm w-1/3 pb-1 {{ $aduan->status == 'proses' ? 'bg-primary' : ''}} {{ $aduan->status == 'selesai' ? 'bg-success' : ''}} {{ $aduan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $aduan->status == '0' ? 'Belum ditanggapi' : $aduan->status }}</span>
                     </td>
-                    <td class="px-4 py-4 flex flex-wrap justify-start">
+                    <td class="px-4 py-4 flex flex-wrap justify-center">
                         <a href="/pengaduan/{{ $aduan->id }}" class="text-primary">
                             <i class="bx bxs-comment-dots text-lg"></i>
                         </a>
-                        <button class="text-danger deletePengaduan" data-id="{{ $aduan->id }}"><i class="bx bxs-trash text-lg"></i></button>
                         @can('masyarakat')
-                            @if ($aduan->status !== 'selesai')
-                            <a href="/pengaduan/{{ $aduan->id }}/edit" class="text-warning"><i class="bx bxs-pencil text-lg"></i></a>
+                            <button class="text-danger deletePengaduan" data-id="{{ $aduan->id }}">
+                                <i class="bx bxs-trash text-lg"></i>
+                            </button>
+                            @if ($aduan->status == '0')
+                                <a href="/pengaduan/{{ $aduan->id }}/edit" class="text-warning">
+                                    <i class="bx bxs-pencil text-lg"></i>
+                                </a>
                             @endif
                         @endcan
                     </td>

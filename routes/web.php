@@ -15,8 +15,14 @@ Route::post('/keluar', [AuthController::class, 'keluar']);
 
 // Route::get('/dashboard', function () { return view('index'); })->middleware('auth');
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
+Route::put('/pengaduan/respon/{pengaduan}', [PengaduanController::class, 'response'])->middleware('auth');
+Route::get('/pengaduan/belum', [PengaduanController::class, 'belum'])->middleware('auth');
+Route::get('/pengaduan/proses', [PengaduanController::class, 'proses'])->middleware('auth');
+Route::get('/pengaduan/selesai', [PengaduanController::class, 'selesai'])->middleware('auth');
 Route::resource('/pengaduan', PengaduanController::class)->middleware('auth');
-Route::put('/pengaduan/respon', [PengaduanController::class, 'response'])->middleware('auth');
+
+Route::get('/tanggapan/proses', [TanggapanController::class, 'proses'])->middleware('auth');
+Route::get('/tanggapan/selesai', [TanggapanController::class, 'selesai'])->middleware('auth');
 Route::resource('/tanggapan', TanggapanController::class)->middleware('auth');
 
 Route::group(['middleware' => ['auth', 'hanyaAdmin']], function() {
