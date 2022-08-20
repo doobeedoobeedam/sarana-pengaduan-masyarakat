@@ -1,7 +1,9 @@
 @extends('templates/dashboard')
 @section('content')
     <div class="bg-white py-4 px-9 mb-5 rounded-lg">
-        <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-2">Selamat datang, Citra!</h1>
+        <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-2">Selamat datang, 
+            {{ auth()->user() ? auth()->user()->nama : 'petugas'}}!
+        </h1>
         <p class="text-base font-normal text-secondary">Ayo sampaikan laporan Anda di sini</p>
     </div>
     <div class="bg-white py-6 px-9 rounded-lg">

@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'password' => password_hash('password', PASSWORD_DEFAULT), // password
             'nama' => $this->faker->name(),
             'telepon' => $this->faker->phoneNumber(),
-            'level' => $faker->randomElement(['admin', 'petugas']),
+            'level' => $faker->randomElement(['admin', 'petugas', 'masyarakat']),
             'remember_token' => Str::random(10),
         ];
     }

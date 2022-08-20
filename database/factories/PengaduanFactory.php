@@ -19,8 +19,7 @@ class PengaduanFactory extends Factory
         $faker = \Faker\Factory::create();
         return [
             'masyarakat_id' => $faker->randomDigitNotNull(),
-            'isi_laporan' => $faker->paragraph(2),
-            'lampiran' => 'lampiran.png',
+            'isi_laporan' => $faker->paragraph(10),
             'status' => $faker->randomElement(['0', 'proses', 'selesai']),
         ];
     }

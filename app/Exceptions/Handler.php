@@ -2,11 +2,32 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Exception;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
+use Auth;
 
 class Handler extends ExceptionHandler
 {
+    // protected function unauthenticated($request, AuthenticationException $exception)
+    // {
+    //     if($request->expectsJson()) {
+    //         return response()->json(['error' => 'Unauthenticated'], 401);
+    //     }
+
+    //     if($request->is('userGuard') || $request->is('userGuard/*')) {
+    //         // return redirect()->guest('/masuk');
+    //         return ('user gagal');
+    //     }
+
+    //     if($request->is('masyarakatGuard') || $request->is('masyarakatGuard/*')) {
+    //         // return redirect()->guest('/masuk');
+    //         return ('masyarakat gagal');
+    //     }
+
+    //     return redirect()->guest(route('login'));
+    // }
     /**
      * A list of exception types with their corresponding custom log levels.
      *

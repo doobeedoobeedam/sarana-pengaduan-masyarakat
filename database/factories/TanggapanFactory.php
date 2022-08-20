@@ -19,6 +19,7 @@ class TanggapanFactory extends Factory
         $faker = \Faker\Factory::create();
         return [
             'pengaduan_id' => $faker->randomDigitNotNull(),
+            'status' => $faker->randomElement(['proses', 'selesai']),
             'tanggapan' => $faker->paragraph(2),
             'petugas_id' => $faker->randomDigitNotNull(),
         ];
