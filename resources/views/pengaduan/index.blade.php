@@ -19,7 +19,7 @@
                 @endcanany
                 <th class="font-semibold text-sm uppercase px-4 py-4">Isi Laporan</th>
                 <th class="font-semibold text-sm uppercase px-4 py-4 text-center">Status</th>
-                <th class="font-semibold text-sm uppercase px-4 py-4 text-center">Aksi</th>
+                <th class="font-semibold text-sm uppercase px-4 py-4">Aksi</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray">
@@ -40,16 +40,18 @@
                     @endcanany
                     <td class="px-4 py-4 text-secondary">{{ substr($aduan->isi_laporan,0,70) . '...' }}</td>
                     <td class="px-4 py-4 text-center">
-                        <span class="text-white text-sm w-1/3 pb-1 {{ $aduan->status == 'proses' ? 'bg-primary' : ''}} {{ $aduan->status == 'selesai' ? 'bg-success' : ''}} {{ $aduan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $aduan->status == '0' ? 'Belum ditanggapi' : $aduan->status }}</span>
+                        <span class="text-white text-sm w-1/3 pb-1 {{ $aduan->status == 'proses' ? 'bg-warning' : ''}} {{ $aduan->status == 'selesai' ? 'bg-success' : ''}} {{ $aduan->status == '0' ? 'bg-orange' : ''}} font-semibold px-2 rounded-full">{{ $aduan->status == '0' ? 'menunggu' : $aduan->status }}</span>
                     </td>
-                    <td class="px-4 py-4 flex flex-wrap justify-center">
+                    <td class="px-4 py-4 flex flex-wrap justify-start">
                         <a href="/pengaduan/{{ $aduan->id }}" class="text-primary">
                             <i class="bx bxs-comment-dots text-lg"></i>
                         </a>
                         @can('masyarakat')
-                            <button class="text-danger deletePengaduan" data-id="{{ $aduan->id }}">
-                                <i class="bx bxs-trash text-lg"></i>
-                            </button>
+                            @if ($aduan->status !== 'proses')
+                                <button class="text-danger deletePengaduan" data-id="{{ $aduan->id }}">
+                                    <i class="bx bxs-trash text-lg"></i>
+                                </button>
+                            @endif
                             @if ($aduan->status == '0')
                                 <a href="/pengaduan/{{ $aduan->id }}/edit" class="text-warning">
                                     <i class="bx bxs-pencil text-lg"></i>

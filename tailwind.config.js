@@ -12,6 +12,7 @@ module.exports = {
       'secondary': '#6b7280',
       'primary': '#5473FF',
       'success': '#39E64A',
+      'orange': '#FD9A3E',
       'warning': '#E3E639',
       'dark': '#17203F',
       'blue': '#5473FF',

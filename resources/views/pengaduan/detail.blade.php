@@ -29,7 +29,7 @@
         </div>
         <div class="mb-8">
             <p class="font-semibold text-sm uppercase text-danger mb-2">Status</p>
-            <span class="text-white text-sm w-1/3 pb-1 {{ $pengaduan->status == 'proses' ? 'bg-primary' : ''}} {{ $pengaduan->status == 'selesai' ? 'bg-success' : ''}} {{ $pengaduan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $pengaduan->status == '0' ? 'menunggu' : $pengaduan->status }}</span>
+            <span class="text-white text-sm w-1/3 pb-1 {{ $pengaduan->status == 'proses' ? 'bg-warning' : ''}} {{ $pengaduan->status == 'selesai' ? 'bg-success' : ''}} {{ $pengaduan->status == '0' ? 'bg-orange' : ''}} font-semibold px-2 rounded-full">{{ $pengaduan->status == '0' ? 'menunggu' : $pengaduan->status }}</span>
         </div>
     </div>
     <div class="mb-6">
@@ -72,7 +72,7 @@
                 <td class="px-4 py-4 text-secondary">-</td>
                 @endif
                 <td class="px-4 py-4 text-center">
-                    <span class="text-white text-sm w-1/3 pb-1 {{ $tanggapan->status == 'proses' ? 'bg-primary' : ''}} {{ $tanggapan->status == 'selesai' ? 'bg-success' : ''}} {{ $tanggapan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $tanggapan->status == '0' ? 'menunggu' : $tanggapan->status }}</span>
+                    <span class="text-white text-sm w-1/3 pb-1 {{ $tanggapan->status == 'proses' ? 'bg-orange' : ''}} {{ $tanggapan->status == 'selesai' ? 'bg-success' : ''}} {{ $tanggapan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $tanggapan->status == '0' ? 'menunggu' : $tanggapan->status }}</span>
                 </td>
                 <td class="px-4 py-4 text-secondary">
                     @if ($tanggapan->tanggapan)

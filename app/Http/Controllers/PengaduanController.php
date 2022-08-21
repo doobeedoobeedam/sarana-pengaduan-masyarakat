@@ -6,16 +6,15 @@ use App\Models\Pengaduan;
 use App\Models\Tanggapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class PengaduanController extends Controller
 {
     public function index() {
         if(auth()->user()->level == 'masyarakat') {
             $pengaduan = Pengaduan::where('masyarakat_id', auth()->user()->id)->get();
-        } elseif(auth()->user()->level == 'admin')
+        }else{
             $pengaduan = Pengaduan::all();
-        else {
-            $pengaduan = Pengaduan::where('status', '==', '0')->get();
         }
 
         return view('pengaduan/index', [
@@ -25,29 +24,45 @@ class PengaduanController extends Controller
     }
 
     public function belum() {
-        $this->authorize('masyarakat');
+        if(auth()->user()->level == 'masyarakat') {
+            $pengaduan = Pengaduan::where('masyarakat_id', auth()->user()->id)->where('status', '0')->get();
+        }elseif(auth()->user()->level == 'petugas') {
+            $pengaduan = Pengaduan::where('status', '0')->get();
+        }else{
+            abort(403);
+        }
+
         return view('pengaduan/index', [
             'title' => 'Pengaduan Belum Ditanggapi',
-            'pengaduan' => Pengaduan::where('masyarakat_id', auth()->user()->id)
-            ->where('status', '0')->get()
+            'pengaduan' => $pengaduan,
         ]);
     }
 
     public function proses() {
-        $this->authorize('masyarakat');
+        if(auth()->user()->level == 'masyarakat') {
+            $pengaduan = Pengaduan::where('masyarakat_id', auth()->user()->id)->where('status', 'proses')->get();
+        }elseif(auth()->user()->level == 'petugas') {
+            $pengaduan = Pengaduan::where('status', 'proses')->get();
+        }else{
+            abort(403);
+        }
         return view('pengaduan/index', [
             'title' => 'Pengaduan Diproses',
-            'pengaduan' => Pengaduan::where('masyarakat_id', auth()->user()->id)
-            ->where('status', 'proses')->get()
+            'pengaduan' => $pengaduan
         ]);
     }
 
     public function selesai() {
-        $this->authorize('masyarakat');
+        if(auth()->user()->level == 'masyarakat') {
+            $pengaduan = Pengaduan::where('masyarakat_id', auth()->user()->id)->where('status', 'selesai')->get();
+        }elseif(auth()->user()->level == 'petugas') {
+            $pengaduan = Pengaduan::where('status', 'selesai')->get();
+        }else{
+            abort(403);
+        }
         return view('pengaduan/index', [
             'title' => 'Pengaduan Selesai',
-            'pengaduan' => Pengaduan::where('masyarakat_id', auth()->user()->id)
-            ->where('status', 'selesai')->get()
+            'pengaduan' => $pengaduan
         ]);
     }
 

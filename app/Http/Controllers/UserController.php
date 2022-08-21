@@ -36,7 +36,7 @@ class UserController extends Controller
 
     public function store(Request $request) {
         $validated = $request->validate([
-            'username' => 'required|min:6|unique:users|unique:masyarakat',
+            'username' => 'required|min:6|unique:users',
             'nama' => 'required',
             'telepon' => 'required|min:11',
             'password' => 'required|min:6',
@@ -50,7 +50,7 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $berhasil = User::create($validated);
         if ($berhasil) {
-            return redirect('petugas')->with('berhasil', 'Berhasil menambahkan petugas!');
+            return redirect()->back()->with('berhasil', 'Berhasil menambahkan petugas!');
         } else {
             return redirect()->back()->with('gagal', 'Gagal menambahkan petugas!');
         }

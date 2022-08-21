@@ -1,7 +1,7 @@
 @extends('templates/dashboard')
 @section('content')
 <div class="bg-white py-6 px-9 mb-5 rounded-lg [&>input]:border-gray [&>input]:bg-white [&>select]:border-gray [&>select]:bg-white">
-    <form action="/petugas" method="POST" class="
+    <form action="/pengguna" method="POST" class="
     [&>div>label]:block [&>div>label]:mb-2 [&>div>label]:text-sm [&>div>label]:font-medium [&>div>label]:text-dark
     [&>div>input]:border [&>div>input]:p-2.5 [&>div>input]:shadow-sm [&>div>input]:placeholder-secondary [&>div>input]:text-secondary [&>div>input]:w-full [&>div>input]:block [&>div>input]:rounded-lg [&>div>input]:sm:text-sm
     [&>div>div>select]:border [&>div>div>select]:p-2.5 [&>div>div>select]:shadow-sm [&>div>div>select]:placeholder-secondary [&>div>div>select]:text-secondary [&>div>div>select]:w-full [&>div>div>select]:block [&>div>div>select]:rounded-lg [&>div>div>select]:sm:text-sm
