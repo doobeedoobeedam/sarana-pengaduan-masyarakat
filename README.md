@@ -1,8 +1,8 @@
-## **Warta!**
+### **Warta!**
 
 Warta! adalah adalah sistem informasi berbasis *web application* untuk menyampaikan sebuah laporan pengaduan atau keluhan.
 
-## **Teknologi yang digunakan**
+### **Teknologi yang digunakan**
 
 - [PHP >= 8.0](https://www.php.net/) — Bahasa yang digunakan
 - [Laravel >= 9.0](https://laravel.com/docs/9.x) — Framework PHP
