@@ -72,7 +72,7 @@
                 <td class="px-4 py-4 text-secondary">-</td>
                 @endif
                 <td class="px-4 py-4 text-center">
-                    <span class="text-white text-sm w-1/3 pb-1 {{ $tanggapan->status == 'proses' ? 'bg-orange' : ''}} {{ $tanggapan->status == 'selesai' ? 'bg-success' : ''}} {{ $tanggapan->status == '0' ? 'bg-warning' : ''}} font-semibold px-2 rounded-full">{{ $tanggapan->status == '0' ? 'menunggu' : $tanggapan->status }}</span>
+                    <span class="text-white text-sm w-1/3 pb-1 {{ $tanggapan->status == 'proses' ? 'bg-warning' : ''}} {{ $tanggapan->status == 'selesai' ? 'bg-success' : ''}} {{ $tanggapan->status == '0' ? 'bg-orange' : ''}} font-semibold px-2 rounded-full">{{ $tanggapan->status == '0' ? 'menunggu' : $tanggapan->status }}</span>
                 </td>
                 <td class="px-4 py-4 text-secondary">
                     @if ($tanggapan->tanggapan)

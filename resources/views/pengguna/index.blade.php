@@ -3,7 +3,7 @@
 <div class="bg-white py-4 px-9 mb-5 rounded-lg flex justify-between items-center">
     <div class="">
         <h1 class="text-lg lg:text-2xl text-danger font-semibold mb-2">{{ $title }}</h1>
-        <p class="text-base font-normal text-secondary">Ayo sampaikan laporan Anda di sini</p>
+        <p class="text-base font-normal text-secondary">Total <span class="lowercase">{{ $title }}</span> yang terdaftar</p>
     </div>
     @if ($title == 'Data Petugas')
         <a href="/pengguna/create" class="text-white bg-danger focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah Petugas</a>
@@ -17,7 +17,7 @@
             <th class="font-semibold text-sm uppercase px-6 py-4">Username</th>
             <th class="font-semibold text-sm uppercase px-6 py-4">Telepon </th>
             <th class="font-semibold text-sm uppercase px-6 py-4">Role</th>
-            <th class="font-semibold text-sm uppercase px-6 py-4"> </th>
+            <th class="font-semibold text-sm uppercase px-6 py-4">Aksi</th>
         </tr>
     </thead>
     <tbody class="divide-y divide-gray text-secondary">
@@ -29,7 +29,6 @@
                 <td class="px-6 py-4">{{ $user->telepon }}</td>
                 <td class="px-6 py-4 capitalize">{{ $user->level }}</td>
                 <td class="px-6 py-4">
-                    <a href="#" class="text-warning"><i class="bx bxs-pencil"></i></a>
                     <button class="text-danger deletePengguna" data-id="{{ $user->id }}"><i class="bx bxs-trash"></i></button>
                 </td>
             </tr>

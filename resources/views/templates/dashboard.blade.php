@@ -16,14 +16,14 @@
         @include('templates/sidebar')
 
         {{-- Navbar --}}
-        <nav class="top-0 w-full absolute flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg shadow-sm bg-white">
+        <nav class="top-0 w-full fixed inset-x-0 flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg shadow-sm bg-white">
             <div class="w-full flex justify-between items-center px-3">
                 <span class="text-2xl text-danger top-5 cursor-pointer flex items-center">
                     <i class="bx bx-menu mr-3" onclick="openSidebar()"></i>
                     <img src="{{ asset('img/logo.png') }}" alt="Warta!">
                 </span>
                 <span class="text-dark top-5 items-center">
-                    <span class="mr-2 font-medium lg:text-base text-sm">
+                    <span class="mr-2 font-medium lg:text-base text-sm capitalize">
                         {{ auth()->user()->nama }}
                     </span>
                     <img class="inline-block h-6 w-6 lg:h-8 lg:w-8 rounded-full ring-2 ring-danger" src="{{ asset('img/profile.png') }}" alt="{{ auth()->user()->nama }}">

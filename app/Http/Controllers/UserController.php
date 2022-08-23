@@ -50,7 +50,7 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $berhasil = User::create($validated);
         if ($berhasil) {
-            return redirect()->back()->with('berhasil', 'Berhasil menambahkan petugas!');
+            return redirect('pengguna/petugas')->with('berhasil', 'Berhasil menambahkan petugas!');
         } else {
             return redirect()->back()->with('gagal', 'Gagal menambahkan petugas!');
         }
